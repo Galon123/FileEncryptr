@@ -86,7 +86,7 @@ func DecryptData(encryptedPayload []byte, passphrase string) ([]byte, error){
 
 func getPassword(confirm bool) (string, error){
 
-	fmt.Print("Enter Vault Password: ")
+	fmt.Print("[VAULT] Enter Vault Password: ")
 
 	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 	fmt.Println()
@@ -95,7 +95,7 @@ func getPassword(confirm bool) (string, error){
 	}
 
 	if confirm{
-		fmt.Print("Confirm Password: ")
+		fmt.Print("[VAULT] Confirm Password: ")
 		confirmPass, err := term.ReadPassword(int(syscall.Stdin))
 		fmt.Println()
 		if err != nil{
