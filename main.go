@@ -15,8 +15,18 @@ func main(){
 	const Green  = "\033[32m"
 	const Yellow = "\033[33m"
 
+	const asciiBanner = 
+	`
+	#    ____                             _____ _ _       __     __          _ _      ____ _     ___  
+	#   / ___|  ___  ___ _   _ _ __ ___  |  ___(_) | ___  \ \   / /_ _ _   _| | |_   / ___| |   |_ _| 
+	#   \___ \ / _ \/ __| | | | '__/ _ \ | |_  | | |/ _ \  \ \ / / _| | | | | | __| | |   | |    | |  
+	#    ___) |  __/ (__| |_| | | |  __/ |  _| | | |  __/   \ V / (_| | |_| | | |_  | |___| |___ | |  
+	#   |____/ \___|\___|\__,_|_|  \___| |_|   |_|_|\___|    \_/ \__,_|\__,_|_|\__|  \____|_____|___| 
+    	#                                                                                            
+	`
+
 	if len(os.Args) < 2 || os.Args[1] == "-h" || os.Args[1] == "--help"{
-		fmt.Println("Secure File Vault CLI")
+		fmt.Print(Green + asciiBanner + Reset)
 		fmt.Println("\nUsage:")
 		fmt.Println("   ./vault encrypt -file <filename>")
 		fmt.Println("   ./vault decrypt -file <encryptedFileName>")
