@@ -21,12 +21,17 @@ func main(){
 
 	encryptFlag := flag.NewFlagSet("encrypt", flag.ExitOnError)
 	encFile := encryptFlag.String("file", "", "Target file to be encrypted")
+
+	//Aditional Flags
 	encOut := encryptFlag.String("out", "", "Customize output File name (optional)")
+	encRm := encryptFlag.Bool("rm", false, "Deletes Original File after Encrypting (optional)")
 
 	decryptFlag := flag.NewFlagSet("decrypt", flag.ExitOnError)
 	decFile := decryptFlag.String("file", "", "Target file to be decrypted")
-	decOut := decryptFlag.String("out", "", "Customize output File name (optional)")
 
+	//Additional Flags
+	decOut := decryptFlag.String("out", "", "Customize output File name (optional)")
+	decRm := decryptFlag.Bool("rm", false, "Deletes Encrypted File after Decrypting (optional)")
 
 	switch os.Args[1]{
 	case "encrypt":
@@ -64,6 +69,15 @@ func main(){
 			os.Exit(1)
 		}
 
+		if *encRm {
+			err = os.Remove(*encFile)
+			if err != nil{
+				fmt.Println("Warning: Encryption Succeeded but Deletion Failed:",err)
+			} else {
+				fmt.Println("Original File Deleted Successfully")
+			}
+		}
+
 		fmt.Println("Success...Encrypted File Saved as", finalFileName)
 
 	case "decrypt":
@@ -91,8 +105,7 @@ func main(){
 			os.Exit(1)
 		}
 
-		*decFile = strings.TrimSuffix(*decFile, ".enc") + ".decrypted"
-		finalFileName := *decFile
+		finalFileName := strings.TrimSuffix(*decFile, ".enc") + ".decrypted"
 		if *decOut != ""{
 			finalFileName = *decOut
 		}
@@ -100,6 +113,15 @@ func main(){
 		if err != nil{
 			fmt.Println("Saving Decrypted File failed: ", err)
 			os.Exit(1)
+		}
+
+		if *decRm {
+			err = os.Remove(*decFile)
+			if err != nil{
+				fmt.Println("Warning: Encryption Succeeded but Deletion Failed:",err)
+			} else {
+				fmt.Println("Original File Deleted Successfully")
+			}
 		}
 
 		fmt.Println("Success...Decrypted File Saved as", finalFileName)
