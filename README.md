@@ -13,13 +13,13 @@ A fast, secure, and standalone command-line utility written in Go that encrypts 
 
 ### **Option 1: Download the Binary**
 
-*(Note: Will Look into it for Future Versions).*
+Available in *Releases*
 
 ### **Option 2: Build from Source**
 
 Ensure you have Go installed, clone the repository, and build the binary:  
-git clone \[https://github.com/yourusername/secure-vault.git\](https://github.com/yourusername/secure-vault.git)  
-cd secure-vault  
+git clone \[https://github.com/yourusername/FileEncryptr.git\](https://github.com/yourusername/FileEncryptr.git)  
+cd File-Encryptr  
 go build \-o vault
 
 ## **Usage**

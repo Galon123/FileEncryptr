@@ -21,9 +21,11 @@ func main(){
 
 	encryptFlag := flag.NewFlagSet("encrypt", flag.ExitOnError)
 	encFile := encryptFlag.String("file", "", "Target file to be encrypted")
+	encOut := encryptFlag.String("out", "", "Customize output File name (optional)")
 
 	decryptFlag := flag.NewFlagSet("decrypt", flag.ExitOnError)
 	decFile := decryptFlag.String("file", "", "Target file to be decrypted")
+	decOut := decryptFlag.String("out", "", "Customize output File name (optional)")
 
 
 	switch os.Args[1]{
@@ -33,27 +35,36 @@ func main(){
 			fmt.Println("Expected a file name using -file...")
 			os.Exit(1)
 		}
+
 		passphrase,err := getPassword(true)
 		if err != nil{
 			fmt.Println("Error reading password: ",err)
 			os.Exit(1)
 		}
+
 		file,err := os.ReadFile(*encFile)
 		if err != nil{
 			fmt.Println("OS read Error: ",err)
 			os.Exit(1)
 		}
+
 		encData, err := EncryptData(file, passphrase)
 		if err != nil{
 			fmt.Println("Encryption Failed: ",err)
 			os.Exit(1)
 		}
-		err = os.WriteFile(*encFile+".enc", encData, 0600)
+
+		finalFileName := *encFile+".enc"
+		if *encOut != ""{
+			finalFileName = *encOut
+		}
+		err = os.WriteFile(finalFileName, encData, 0600)
 		if err != nil{
 			fmt.Println("Saving Encrypted File failed: ", err)
 			os.Exit(1)
 		}
-		fmt.Println("Success...Encrypted File Saved as", *encFile+".enc")
+
+		fmt.Println("Success...Encrypted File Saved as", finalFileName)
 
 	case "decrypt":
 		decryptFlag.Parse(os.Args[2:])
@@ -61,28 +72,37 @@ func main(){
 			fmt.Println("Expected a file name using -file...")
 			os.Exit(1)
 		}
+
 		passphrase,err := getPassword(false)
 		if err != nil{
 			fmt.Println("Error reading password:",err)
 			os.Exit(1)
 		}
+
 		file,err := os.ReadFile(*decFile)
 		if err != nil{
 			fmt.Println("OS read Error:",err)
 			os.Exit(1)
 		}
+
 		decData, err := DecryptData(file, passphrase)
 		if err != nil{
 			fmt.Println("Decryption Failed:",err)
 			os.Exit(1)
 		}
+
 		*decFile = strings.TrimSuffix(*decFile, ".enc") + ".decrypted"
-		err = os.WriteFile(*decFile, decData, 0600)
+		finalFileName := *decFile
+		if *decOut != ""{
+			finalFileName = *decOut
+		}
+		err = os.WriteFile(finalFileName, decData, 0600)
 		if err != nil{
 			fmt.Println("Saving Decrypted File failed: ", err)
 			os.Exit(1)
 		}
-		fmt.Println("Success...Decrypted File Saved as", *decFile)
+
+		fmt.Println("Success...Decrypted File Saved as", finalFileName)
 	default:
 		fmt.Printf("Expected encrypt or decrypt after program name...")
 		os.Exit(1)
