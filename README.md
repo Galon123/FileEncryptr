@@ -31,12 +31,30 @@ Use the encrypt subcommand and provide the target file. You will be prompted to 
 
 *Output: my\_secret\_data.txt.enc*
 
+
 ### **Decrypting a File**
 
 Use the decrypt subcommand and provide the encrypted .enc file.  
 ./vault decrypt \-file my\_secret\_data.txt.enc
 
 *Output: my\_secret\_data.txt.decrypted*
+
+#### **Flags**
+
+**1. \-out <outputFileName>**
+
+Use after encrypt or decrypt to specify output file name.
+./vault encrypt \-file test\_1.txt \-out test1
+
+*Output: test1*
+
+**2. \-rm**
+
+Use after encrypt or decrypt to remove the original File after operation is done.
+./vault decrypt \-file test1 -rm
+
+*Output: test1.decrypted*
+
 
 ## **How it Works Under the Hood**
 
