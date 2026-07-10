@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 )
@@ -62,10 +63,26 @@ func main(){
 			os.Exit(1)
 		}
 
-		file,err := os.ReadFile(*encFile)
+		info, err := os.Stat(*encFile)
 		if err != nil{
-			fmt.Println(Red + "[ERROR] OS read Error:" + Reset,err)
+			log.Fatal(err)
 			os.Exit(1)
+		}
+
+		var file []byte
+
+		if !info.IsDir(){
+			file,err = os.ReadFile(*encFile)
+			if err != nil{
+				fmt.Println(Red + "[ERROR] OS read Error:" + Reset,err)
+				os.Exit(1)
+			}
+		}else{
+			file,err = ZipDirectory(*encFile)
+			if err != nil{
+				fmt.Println(Red + "[ERROR] Zip Error:"+ Reset,err)
+				os.Exit(1)
+			}	
 		}
 
 		encData, err := EncryptData(file, passphrase)
@@ -85,7 +102,7 @@ func main(){
 		}
 
 		if *encRm {
-			err = os.Remove(*encFile)
+			err = os.RemoveAll(*encFile)
 			if err != nil{
 				fmt.Println(Yellow + "[WARN] Encryption Succeeded but Deletion Failed:" + Reset,err)
 			} else {

@@ -43,19 +43,16 @@ Use the decrypt subcommand and provide the encrypted .enc file.
 
 **1. \-out <outputFileName>**
 
-Use after encrypt or decrypt to specify output file name.   
->>>>>>> ffcec72 (docs:  update README)
-./vault encrypt \-file test\_1.txt \-out test1
+Use after encrypt or decrypt to specify output file name.  
 
-*Output: test1*
+*./vault encrypt \-file test\_1.txt \-out test1*
+
 
 **2. \-rm**
 
 Use after encrypt or decrypt to remove the original File after operation is done.   
->>>>>>> ffcec72 (docs:  update README)
-./vault decrypt \-file test1 -rm
 
-*Output: test1.decrypted*
+*./vault decrypt \-file test1 -rm* 
 
 
 ## **How it Works Under the Hood**
