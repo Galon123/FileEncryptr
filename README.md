@@ -1,13 +1,38 @@
-# **Secure File Vault CLI**
+```text
+                                                                                               
+                                                                                               
+               AAA                                                         iiii                   
+              A:::A                                                       i::::i                  
+             A:::::A                                                       iiii                   
+            A:::::::A                                                                          
+           A:::::::::A             eeeeeeeeeeee         ggggggggg   ggggg iiiiiii     ssssssssss   
+          A:::::A:::::A          ee::::::::::::ee     g:::::::::ggg::::g  i:::::i   ss::::::::::s  
+         A:::::A A:::::A        e::::::eeeee:::::ee  g:::::::::::::::::g  i::::i  ss:::::::::::::s 
+        A:::::A   A:::::A      e::::::e     e:::::e g::::::ggggg::::::gg  i::::i  s::::::ssss:::::s
+       A:::::A     A:::::A     e:::::::eeeee::::::e g:::::g     g:::::g   i::::i   s:::::s  ssssss 
+      A:::::AAAAAAAAA:::::A    e:::::::::::::::::e  g:::::g     g:::::g   i::::i     s::::::s      
+     A:::::::::::::::::::::A   e::::::eeeeeeeeeee   g:::::g     g:::::g   i::::i        s::::::s   
+    A:::::AAAAAAAAAAAAA:::::A  e:::::::e            g::::::g    g:::::g   i::::i  ssssss   s:::::s 
+   A:::::A             A:::::A e::::::::e           g:::::::ggggg:::::g  i::::::i s:::::ssss::::::s
+  A:::::A               A:::::A e::::::::eeeeeeee    g::::::::::::::::g  i::::::i s::::::::::::::s 
+ A:::::A                 A:::::A ee:::::::::::::e     gg::::::::::::::g  i::::::i  s:::::::::::ss  
+AAAAAAA                   AAAAAAA  eeeeeeeeeeeeee       gggggggg::::::g  iiiiiiii   sssssssssss    
+                                                               g:::::g                          
+                                                   gggggg      g:::::g                          
+                                                   g:::::gg   gg:::::g                          
+                                                    g::::::ggg:::::::g                          
+                                                     gg:::::::::::::g                           
+                                                       ggg::::::ggg                             
+                                                          gggggg                                
 
 A fast, secure, and standalone command-line utility written in Go that encrypts and decrypts local files using authenticated AES-256-GCM encryption.
 
 ## **Features**
 
-* **AES-256-GCM Encryption:** Uses authenticated cryptography to ensure data is not only hidden but mathematically verified against tampering.  
-* **PBKDF2 Key Derivation:** Uses a randomized **16-byte salt** and **4096 SHA-256 iterations** to securely derive cryptographic keys from user passwords.  
-* **Secure Prompting:** Masks password input in the terminal and requires confirmation to prevent accidental typos when locking files.  
-* **Zero Dependencies:** Compiles down to a single, static binary. No external libraries or runtimes are required to use the compiled tool.
+* **` `AES-256-GCM Encryption:` `** Uses authenticated cryptography to ensure data is not only hidden but mathematically verified against tampering.  
+* **` `PBKDF2 Key Derivation:` `** Uses a randomized **16-byte salt** and **4096 SHA-256 iterations** to securely derive cryptographic keys from user passwords.  
+* **` `Secure Prompting:` `** Masks password input in the terminal and requires confirmation to prevent accidental typos when locking files.  
+* **` `Zero Dependencies:` `** Compiles down to a single, static binary. No external libraries or runtimes are required to use the compiled tool.
 
 ## **Installation**
 
