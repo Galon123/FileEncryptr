@@ -1,86 +1,86 @@
 ```text
-                                                                                               
-                                                                                               
-               AAA                                                         iiii                   
-              A:::A                                                       i::::i                  
-             A:::::A                                                       iiii                   
-            A:::::::A                                                                          
-           A:::::::::A             eeeeeeeeeeee         ggggggggg   ggggg iiiiiii     ssssssssss   
-          A:::::A:::::A          ee::::::::::::ee     g:::::::::ggg::::g  i:::::i   ss::::::::::s  
-         A:::::A A:::::A        e::::::eeeee:::::ee  g:::::::::::::::::g  i::::i  ss:::::::::::::s 
-        A:::::A   A:::::A      e::::::e     e:::::e g::::::ggggg::::::gg  i::::i  s::::::ssss:::::s
-       A:::::A     A:::::A     e:::::::eeeee::::::e g:::::g     g:::::g   i::::i   s:::::s  ssssss 
-      A:::::AAAAAAAAA:::::A    e:::::::::::::::::e  g:::::g     g:::::g   i::::i     s::::::s      
-     A:::::::::::::::::::::A   e::::::eeeeeeeeeee   g:::::g     g:::::g   i::::i        s::::::s   
-    A:::::AAAAAAAAAAAAA:::::A  e:::::::e            g::::::g    g:::::g   i::::i  ssssss   s:::::s 
-   A:::::A             A:::::A e::::::::e           g:::::::ggggg:::::g  i::::::i s:::::ssss::::::s
-  A:::::A               A:::::A e::::::::eeeeeeee    g::::::::::::::::g  i::::::i s::::::::::::::s 
- A:::::A                 A:::::A ee:::::::::::::e     gg::::::::::::::g  i::::::i  s:::::::::::ss  
-AAAAAAA                   AAAAAAA  eeeeeeeeeeeeee       gggggggg::::::g  iiiiiiii   sssssssssss    
-                                                               g:::::g                          
-                                                   gggggg      g:::::g                          
-                                                   g:::::gg   gg:::::g                          
-                                                    g::::::ggg:::::::g                          
-                                                     gg:::::::::::::g                           
-                                                       ggg::::::ggg                             
 
-                                                          gggggg  
+  █████╗  ███████╗  ██████╗  ██╗ ███████╗
+ ██╔══██╗ ██╔════╝ ██╔════╝  ██║ ██╔════╝
+ ███████║ █████╗   ██║  ███╗ ██║ ███████╗
+ ██╔══██║ ██╔══╝   ██║   ██║ ██║ ╚════██║
+ ██║  ██║ ███████╗ ╚██████╔╝ ██║ ███████║
+ ╚═╝  ╚═╝ ╚══════╝  ╚═════╝  ╚═╝ ╚══════╝
+                                                                                                         
+                                    
 ```                             
 
-A fast, secure, and standalone command-line utility written in Go that encrypts and decrypts local files using authenticated AES-256-GCM encryption.
+A fast, secure, and standalone command-line utility written in Go that encrypts and decrypts local files/folders using authenticated AES-256-GCM encryption.
 
 ## **Features**
 
-* **` `AES-256-GCM Encryption:` `** Uses authenticated cryptography to ensure data is not only hidden but mathematically verified against tampering.  
-* **` `PBKDF2 Key Derivation:` `** Uses a randomized **16-byte salt** and **4096 SHA-256 iterations** to securely derive cryptographic keys from user passwords.  
-* **` `Secure Prompting:` `** Masks password input in the terminal and requires confirmation to prevent accidental typos when locking files.  
-* **` `Zero Dependencies:` `** Compiles down to a single, static binary. No external libraries or runtimes are required to use the compiled tool.
+* **AES-256-GCM Encryption:** Uses authenticated cryptography to ensure data is not only hidden but mathematically verified against tampering.  
+* **PBKDF2 Key Derivation:** Uses a randomized **16-byte salt** and **4096 SHA-256 iterations** to securely derive cryptographic keys from user passwords.  
+* **Secure Prompting:** Masks password input in the terminal and requires confirmation to prevent accidental typos when locking files.  
+* **Zero Dependencies:** Compiles down to a single, static binary. No external libraries or runtimes are required to use the compiled tool.
+
+## **Prerequisites**
+- [Go (Golang)](https://go.dev/dl/) installed and added to your system `PATH`.
 
 ## **Installation**
+The easiest way to install Aegis is via the provided shell script. It will compile the binary, move it to your local bin, and configure your shell.
 
-### **Option 1: Download the Binary**
+```bash
+# 1. Clone the repository
+git clone [https://github.com/your-username/Aegis-CLI.git](https://github.com/your-username/Aegis-CLI.git)
+cd aegis
 
-Available in *Releases*
+# 2. Make the installer executable
+chmod +x install.sh
 
-### **Option 2: Build from Source**
+# 3. Run the installer
+./install.sh
 
-Ensure you have Go installed, clone the repository, and build the binary:  
-git clone \[https://github.com/yourusername/FileEncryptr.git\](https://github.com/yourusername/FileEncryptr.git)  
-cd File-Encryptr  
-go build \-o vault
+# 4. Reload your shell
+source ~/.bashrc  # (or ~/.zshrc if using Zsh)
+```
 
 ## **Usage**
 
 ### **Encrypting a File**
 
 Use the encrypt subcommand and provide the target file. You will be prompted to enter and confirm a password.  
-./vault encrypt \-file my\_secret\_data.txt
+```
+$ aegis encrypt -file my_secret_data.txt
+```
 
 *Output: my\_secret\_data.txt.enc*
+
+**\* In case of directories/folders containing multiple files, `Aegis` automatically zips them into a singular file then encryptes that zip file.**
 
 
 ### **Decrypting a File**
 
 Use the decrypt subcommand and provide the encrypted .enc file.  
-./vault decrypt \-file my\_secret\_data.txt.enc
+```
+$ aegis decrypt \-file my\_secret\_data.txt.enc
+```
 
 *Output: my\_secret\_data.txt.decrypted*
 
 ### **Flags**
 
-**1. \-out <outputFileName>**
+**1. \-out**
 
 Use after encrypt or decrypt to specify output file name.  
 
-*./vault encrypt \-file test\_1.txt \-out test1*
+```out flag
+$ aegis encrypt -file test_1.txt -out test1
+```
 
 
 **2. \-rm**
 
 Use after encrypt or decrypt to remove the original File after operation is done.   
 
-*./vault decrypt \-file test1 -rm* 
-
+```
+$ aegis decrypt \-file test1 -rm
+```
 
 ## **How it Works Under the Hood**
 
