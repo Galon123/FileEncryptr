@@ -23,7 +23,9 @@ AAAAAAA                   AAAAAAA  eeeeeeeeeeeeee       gggggggg::::::g  iiiiiii
                                                     g::::::ggg:::::::g                          
                                                      gg:::::::::::::g                           
                                                        ggg::::::ggg                             
-                                                          gggggg                                
+
+                                                          gggggg  
+```                             
 
 A fast, secure, and standalone command-line utility written in Go that encrypts and decrypts local files using authenticated AES-256-GCM encryption.
 
