@@ -14,6 +14,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"syscall"
 
 	"golang.org/x/term"
@@ -193,6 +194,64 @@ func IsZip(data []byte) bool{
 	return data[0] == 0x50 && data[1] == 0x4B && data[2] == 0x03 && data[3] == 0x04 
 }
 
-// func UnZipIntoDirectory(data []byte, destDir string) error{
+func UnZipIntoDirectory(zipData []byte, targetDir string) error{
 
-// }
+	reader := bytes.NewReader(zipData);
+	zipReader, err := zip.NewReader(reader, int64(len(zipData)))
+
+	if err != nil{
+		return fmt.Errorf("Failed to read Zip Data: %w",err);
+	}
+
+	absTargetDir, err := filepath.Abs(targetDir);
+	if err != nil{
+		return fmt.Errorf("Failed to fetch Absolute Target Path: %w", err);
+	}
+
+	if err := os.MkdirAll(absTargetDir, 0700); err != nil{
+		return fmt.Errorf("Failed to create Path: %w", err);
+	}
+
+	for _, file := range zipReader.File{
+
+		cleanPath := filepath.Clean(file.Name)
+
+		// ZIP-SLIP SECURITY CHECK:
+		// Prevent malicious archives from using '../' relative paths to write 
+		// files outside of the intended target directory.
+		targetPath := filepath.Join(absTargetDir, cleanPath)
+		if !strings.HasPrefix(targetPath, absTargetDir+string(filepath.Separator)) && targetPath != absTargetDir {
+			return fmt.Errorf("security violation: illegal file path traversal detected in archive -> %s", file.Name)
+		}
+
+		if file.FileInfo().IsDir(){
+			if err := os.MkdirAll(targetPath, 0700); err != nil{
+				return fmt.Errorf("Failed to create directory inside archive: %w", err);
+			}
+			continue
+		}
+
+		if err := os.MkdirAll(filepath.Dir(targetPath), 0700); err != nil{
+			return fmt.Errorf("Failed to create Parent directory: %w", err);
+		}
+
+		srcFile, err := file.Open();
+		if err != nil{
+			return fmt.Errorf("Failed to open file on archive: %w", err);
+		}
+
+		defer srcFile.Close();
+
+		destFile, err := os.OpenFile(targetPath, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, file.Mode()&0777)
+		if err != nil{
+			return fmt.Errorf("Failed to open physical File: %w", err);
+		}
+
+		_, err = io.Copy(destFile, srcFile)
+
+		if err != nil{
+			return fmt.Errorf("Failed during streaming data to file: %w", err);
+		}
+	}
+	return nil;
+}

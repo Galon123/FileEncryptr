@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -31,9 +32,9 @@ func main(){
 	if len(os.Args) < 2 || os.Args[1] == "-h" || os.Args[1] == "--help"{
 		fmt.Print(Green + asciiBanner + Reset)
 		fmt.Println("\nUsage:")
-		fmt.Println("   ./vault encrypt -file <filename>")
-		fmt.Println("   ./vault decrypt -file <encryptedFileName>")
-		fmt.Println("\nRun './vault <command> -h' for more information on a specific command")
+		fmt.Println("\taegis encrypt -file <filename>")
+		fmt.Println("\taegis decrypt -file <encryptedFileName>")
+		fmt.Println("\nRun 'aegis <command> -h' for more information on a specific command")
 		os.Exit(0)
 	}
 
@@ -139,14 +140,35 @@ func main(){
 			os.Exit(1)
 		}
 
-		finalFileName := strings.TrimSuffix(*decFile, ".enc") + ".decrypted"
-		if *decOut != ""{
-			finalFileName = *decOut
-		}
-		err = os.WriteFile(finalFileName, decData, 0600)
-		if err != nil{
-			fmt.Println(Red + "[ERROR] Saving Decrypted File failed:" + Reset, err)
-			os.Exit(1)
+		var finalFileName string;
+
+		if IsZip(decData){
+			if *decOut == "" {
+                dir := filepath.Dir(*decFile)
+                baseName := filepath.Base(*decFile)
+                extractedName := strings.TrimSuffix(baseName, ".enc") + "_extracted"
+                finalFileName = filepath.Join(dir, extractedName)
+            } else {
+                finalFileName = *decOut
+            }
+
+            fmt.Printf("[*] Extracting....\n");
+
+            if err := UnZipIntoDirectory(decData, finalFileName); err != nil{
+                fmt.Println(Red + "[ERROR] Extraction Failed:" + Reset,err);
+                os.Exit(1)
+            }
+            fmt.Println(Green + "[SUCCESS] Successfully extracted folder onto: " + Reset + finalFileName)
+		} else {
+			finalFileName = strings.TrimSuffix(*decFile, ".enc") + ".decrypted"
+			if *decOut != ""{
+				finalFileName = *decOut
+			}
+			err = os.WriteFile(finalFileName, decData, 0600)
+			if err != nil{
+				fmt.Println(Red + "[ERROR] Saving Decrypted File failed:" + Reset, err)
+				os.Exit(1)
+			}
 		}
 
 		if *decRm {
